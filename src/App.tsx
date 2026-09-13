@@ -1,7 +1,3 @@
-// ==================== APP ====================
-// Điều hướng đơn giản giữa 2 trang demo
-// Dùng state để tab-switch, không cần React Router
-
 import { useState } from 'react';
 import { AccordionDemo } from './pages/AccordionDemo';
 import { ProductsPage } from './pages/ProductsPage';
@@ -14,12 +10,11 @@ function App() {
 
   return (
     <div className="app">
-      {/* ========== HEADER ========== */}
       <header className="app-header">
         <div className="app-header-content">
           <div>
             <h1 className="app-title">Buổi 2 — Design Patterns</h1>
-            <p className="app-subtitle">React + TypeScript · Compound Component & Custom Hook</p>
+            <p className="app-subtitle">Compound Component & Custom Hook</p>
           </div>
           <nav className="app-nav">
             <button
@@ -40,13 +35,11 @@ function App() {
         </div>
       </header>
 
-      {/* ========== MAIN CONTENT ========== */}
       <main className="app-main">
         {activeTab === 'accordion' && <AccordionDemo />}
         {activeTab === 'products' && <ProductsPage />}
       </main>
 
-      {/* ========== FOOTER ========== */}
       <footer className="app-footer">
         <p>Bài tập Buổi 2 </p>
       </footer>

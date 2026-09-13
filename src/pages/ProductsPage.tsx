@@ -1,20 +1,7 @@
-// ==================== PRODUCTS PAGE ====================
-// Demo usePagination<Product> với dữ liệu từ Buoi1
-//
-// Component này CHỈ hiển thị UI:
-//   - Không biết cách tính trang
-//   - Không biết cách slice mảng
-//   - Giao hết cho usePagination hook
-
 import { usePagination } from '../hooks/usePagination';
 import type { Product } from '../types/product.types';
 import { ProductStatus } from '../types/product.types';
 
-
-
-// ==================== MOCK DATA TỪ BUOI 1 ====================
-// Dữ liệu giả lập giống demo.ts trong Buoi1
-// Đủ nhiều để test pagination (12 sản phẩm, 5 item/trang → 3 trang)
 const PRODUCTS: Product[] = [
   { id: 'prod-001', name: 'Laptop Dell XPS 15', price: 32_000_000, stock: 50, status: ProductStatus.InStock, createdAt: new Date('2024-01-01'), updatedAt: new Date('2024-06-01') },
   { id: 'prod-002', name: 'Chuột Logitech MX Master 3', price: 2_500_000, stock: 200, status: ProductStatus.InStock, createdAt: new Date('2024-01-02'), updatedAt: new Date('2024-06-02') },
@@ -30,7 +17,6 @@ const PRODUCTS: Product[] = [
   { id: 'prod-012', name: 'Nokia 3310 (Cổ điển)', price: 500_000, stock: 0, status: ProductStatus.Discontinued, createdAt: new Date('2024-01-12'), updatedAt: new Date('2024-06-12') },
 ];
 
-// Map màu badge theo ProductStatus
 const STATUS_LABEL: Record<ProductStatus, string> = {
   [ProductStatus.InStock]: 'Còn hàng',
   [ProductStatus.OutOfStock]: 'Hết hàng',
@@ -44,33 +30,27 @@ const STATUS_CLASS: Record<ProductStatus, string> = {
 };
 
 export function ProductsPage() {
-  // ==================== DÙNG CUSTOM HOOK ====================
-  // usePagination<Product>: T được suy luận là Product
-  // → currentItems sẽ có type Product[], không cần any
   const {
     currentPage,
     totalPages,
-    currentItems,   // Product[] – chỉ items của trang hiện tại
+    currentItems,
     hasNextPage,
     hasPreviousPage,
     next,
     prev,
     goToPage,
-  } = usePagination<Product>(PRODUCTS, 5); // 5 sản phẩm mỗi trang
+  } = usePagination<Product>(PRODUCTS, 5);
 
   return (
     <div className="page">
       <div className="page-header">
         <h1 className="page-title">Bài 2 — usePagination&lt;T&gt;</h1>
-        <p className="page-subtitle">
-          Custom Hook + Generic TypeScript · Dữ liệu từ Buổi 1
-        </p>
+        <p className="page-subtitle">Custom Hook + Generic TypeScript </p>
         <span className="page-meta">
           Tổng: {PRODUCTS.length} sản phẩm · {totalPages} trang
         </span>
       </div>
 
-      {/* ========== BẢNG SẢN PHẨM ========== */}
       <div className="table-wrapper">
         <table className="product-table">
           <thead>
@@ -83,17 +63,11 @@ export function ProductsPage() {
             </tr>
           </thead>
           <tbody>
-            {/* currentItems là Product[] – Hook đã slice sẵn */}
             {currentItems.map((product, index) => (
               <tr key={product.id}>
-                {/* Số thứ tự tuyệt đối (không reset về 1 khi đổi trang) */}
-                <td className="td-index">
-                  {(currentPage - 1) * 5 + index + 1}
-                </td>
+                <td className="td-index">{(currentPage - 1) * 5 + index + 1}</td>
                 <td className="td-name">{product.name}</td>
-                <td className="td-price">
-                  {product.price.toLocaleString('vi-VN')} ₫
-                </td>
+                <td className="td-price">{product.price.toLocaleString('vi-VN')} ₫</td>
                 <td className="td-stock">{product.stock}</td>
                 <td>
                   <span className={`badge ${STATUS_CLASS[product.status]}`}>
@@ -106,19 +80,10 @@ export function ProductsPage() {
         </table>
       </div>
 
-      {/* ========== PAGINATION CONTROLS ========== */}
-      {/* Component này CHỈ gọi next/prev/goToPage từ hook, không tự tính toán gì */}
       <div className="pagination">
-        {/* Prev */}
-        <button
-          className="pagination-btn"
-          onClick={prev}
-          disabled={!hasPreviousPage}
-        >
+        <button className="pagination-btn" onClick={prev} disabled={!hasPreviousPage}>
           ← Trước
         </button>
-
-        {/* Số trang */}
         <div className="pagination-pages">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
@@ -130,20 +95,12 @@ export function ProductsPage() {
             </button>
           ))}
         </div>
-
-        {/* Next */}
-        <button
-          className="pagination-btn"
-          onClick={next}
-          disabled={!hasNextPage}
-        >
+        <button className="pagination-btn" onClick={next} disabled={!hasNextPage}>
           Sau →
         </button>
       </div>
 
-      <p className="pagination-info">
-        Trang {currentPage} / {totalPages}
-      </p>
+      <p className="pagination-info">Trang {currentPage} / {totalPages}</p>
     </div>
   );
 }

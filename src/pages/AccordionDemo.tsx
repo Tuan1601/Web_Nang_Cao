@@ -1,11 +1,5 @@
-// ==================== ACCORDION DEMO ====================
-// Trang demo Accordion với nội dung FAQ về React/TypeScript
-// Component này CHỈ chịu trách nhiệm hiển thị UI
-// Không biết gì về logic mở/đóng panel – Context xử lý hết
-
 import { Accordion } from '../components/Accordion';
 
-// Dữ liệu FAQ – typed rõ ràng, không dùng any
 interface FaqItem {
   value: string;
   question: string;
@@ -32,7 +26,7 @@ const FAQ_DATA: FaqItem[] = [
     value: 'custom-hook',
     question: 'Khi nào nên dùng Custom Hook thay vì HOC?',
     answer:
-      'Theo Buổi 2: Dùng Custom Hook khi muốn chia sẻ logic không kèm UI cố định. ' +
+      'Dùng Custom Hook khi muốn chia sẻ logic không kèm UI cố định. ' +
       'Dùng HOC khi cần bọc nhiều component bằng cùng một logic (ví dụ: withAuth). ' +
       'Custom Hook hiện đại hơn và tránh được vấn đề "wrapper hell" của HOC.',
   },
@@ -59,22 +53,11 @@ export function AccordionDemo() {
     <div className="page">
       <div className="page-header">
         <h1 className="page-title">Bài 1 — Accordion</h1>
-        <p className="page-subtitle">
-          Compound Component + Context API · Kiến thức Buổi 2
-        </p>
+        <p className="page-subtitle">Compound Component + Context API </p>
       </div>
 
       <div className="demo-section">
         <h2 className="demo-title"> FAQ — React & Design Patterns</h2>
-
-        {/* API sử dụng giống hệt slide đã học:
-            <Accordion>
-              <Accordion.Item value="...">
-                <Accordion.Trigger>...</Accordion.Trigger>
-                <Accordion.Panel>...</Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
-        */}
         <Accordion defaultValue="compound-component">
           {FAQ_DATA.map((faq) => (
             <Accordion.Item key={faq.value} value={faq.value}>
