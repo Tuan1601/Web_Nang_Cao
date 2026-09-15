@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import type { Deadline } from '@/features/deadlines/types/deadline.types';
 import type { ApiResponse } from '@/shared/types/api.types';
 
-// Ngày hiện tại để tính deadline mẫu tương đối
 const now = new Date();
 const addDays = (days: number): string => {
   const d = new Date(now);
@@ -11,7 +10,6 @@ const addDays = (days: number): string => {
   return d.toISOString();
 };
 
-// Dữ liệu mẫu – đại diện nhiều môn học và nhiều trạng thái
 const MOCK_DEADLINES: Deadline[] = [
   {
     id: '1',
@@ -87,12 +85,9 @@ const MOCK_DEADLINES: Deadline[] = [
   },
 ];
 
-// BUỔI 3 (liên quan): Route Handler của Next.js App Router
 export async function GET(): Promise<NextResponse<ApiResponse<Deadline[]>>> {
-  // Giả lập độ trễ mạng để UI có thể hiển thị loading state
   await new Promise((resolve) => setTimeout(resolve, 700));
 
-  // BUỔI 1: Sử dụng ApiResponse<Deadline[]> – Generic type, không dùng any
   const response: ApiResponse<Deadline[]> = {
     statusCode: 200,
     message: 'Lấy danh sách deadline thành công',
