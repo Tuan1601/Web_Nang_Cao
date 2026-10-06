@@ -1,17 +1,17 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import type { Deadline, DeadlineStatus, CreateDeadlineInput } from './types/deadline.types';
 import type { ApiResponse } from '@/shared/types/api.types';
-import { isDeadline, getDaysRemaining } from './utils/deadline.utils';
+import { isDeadline, getDaysRemaining, calcStats } from './utils/deadline.utils';
 import { STORAGE_KEY } from '@/store/localStorageMiddleware';
 
-interface DeadlinesState {
+export interface DeadlinesState {
   items: Deadline[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
   filter: DeadlineStatus;
 }
 
-const initialState: DeadlinesState = {
+export const initialState: DeadlinesState = {
   items: [],
   status: 'idle',
   error: null,
@@ -22,7 +22,7 @@ export const fetchDeadlines = createAsyncThunk<Deadline[], void>(
   'deadlines/fetchAll',
   async (_, { rejectWithValue }) => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
       if (saved) {
         const parsed: unknown[] = JSON.parse(saved);
         const valid = parsed.filter(isDeadline);
@@ -42,14 +42,14 @@ export const fetchDeadlines = createAsyncThunk<Deadline[], void>(
   }
 );
 
-const deadlinesSlice = createSlice({
+export const deadlinesSlice = createSlice({
   name: 'deadlines',
   initialState,
   reducers: {
     addDeadline(state, action: PayloadAction<CreateDeadlineInput>) {
       const newDeadline: Deadline = {
         ...action.payload,
-        id: `local-${Date.now()}`,
+        id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
         completed: false,
         createdAt: new Date().toISOString(),
       };
@@ -67,52 +67,81 @@ const deadlinesSlice = createSlice({
 
     updateDeadline(state, action: PayloadAction<Partial<Deadline> & { id: string }>) {
       const idx = state.items.findIndex((d) => d.id === action.payload.id);
-      if (idx !== -1) state.items[idx] = { ...state.items[idx], ...action.payload };
+      if (idx !== -1) {
+        state.items[idx] = { ...state.items[idx], ...action.payload };
+      }
     },
 
     setFilter(state, action: PayloadAction<DeadlineStatus>) {
       state.filter = action.payload;
     },
+
+    setDeadlines(state, action: PayloadAction<Deadline[]>) {
+      state.items = action.payload;
+      state.status = 'succeeded';
+      state.error = null;
+    },
+
+    clearAllDeadlines(state) {
+      state.items = [];
+    },
   },
 
   extraReducers: (builder) => {
     builder
-      .addCase(fetchDeadlines.pending,   (state)         => { state.status = 'loading'; state.error = null; })
-      .addCase(fetchDeadlines.fulfilled, (state, action) => { state.status = 'succeeded'; state.items = action.payload; })
-      .addCase(fetchDeadlines.rejected,  (state, action) => { state.status = 'failed'; state.error = (action.payload as string) ?? 'Lỗi tải dữ liệu'; });
+      .addCase(fetchDeadlines.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(fetchDeadlines.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.items = action.payload;
+      })
+      .addCase(fetchDeadlines.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = (action.payload as string) ?? 'Lỗi tải dữ liệu';
+      });
   },
 });
 
-export const { addDeadline, toggleDeadline, deleteDeadline, updateDeadline, setFilter } =
-  deadlinesSlice.actions;
+export const {
+  addDeadline,
+  toggleDeadline,
+  deleteDeadline,
+  updateDeadline,
+  setFilter,
+  setDeadlines,
+  clearAllDeadlines,
+} = deadlinesSlice.actions;
 
-interface StateWithDeadlines {
+export interface StateWithDeadlines {
   deadlines: DeadlinesState;
 }
 
-export const selectAllDeadlines      = (state: StateWithDeadlines) => state.deadlines.items;
-export const selectFilter            = (state: StateWithDeadlines) => state.deadlines.filter;
-export const selectStatus            = (state: StateWithDeadlines) => state.deadlines.status;
-export const selectError             = (state: StateWithDeadlines) => state.deadlines.error;
+export const selectAllDeadlines = (state: StateWithDeadlines) => state.deadlines.items;
+export const selectFilter = (state: StateWithDeadlines) => state.deadlines.filter;
+export const selectStatus = (state: StateWithDeadlines) => state.deadlines.status;
+export const selectError = (state: StateWithDeadlines) => state.deadlines.error;
 
-export const selectFilteredDeadlines = (state: StateWithDeadlines): Deadline[] => {
-  const { items, filter } = state.deadlines;
-  switch (filter) {
-    case 'pending':   return items.filter((d: Deadline) => !d.completed && getDaysRemaining(d.dueDate) >= 0);
-    case 'overdue':   return items.filter((d: Deadline) => !d.completed && getDaysRemaining(d.dueDate) < 0);
-    case 'completed': return items.filter((d: Deadline) => d.completed);
-    default:          return items;
+export const selectFilteredDeadlines = createSelector(
+  [selectAllDeadlines, selectFilter],
+  (items, filter) => {
+    switch (filter) {
+      case 'pending':
+        return items.filter((d: Deadline) => !d.completed && getDaysRemaining(d.dueDate) >= 0);
+      case 'overdue':
+        return items.filter((d: Deadline) => !d.completed && getDaysRemaining(d.dueDate) < 0);
+      case 'completed':
+        return items.filter((d: Deadline) => d.completed);
+      default:
+        return items;
+    }
   }
-};
+);
 
-export const selectDeadlineStats = (state: StateWithDeadlines) => {
-  const items = state.deadlines.items;
-  return {
-    total:     items.length,
-    pending:   items.filter((d: Deadline) => !d.completed && getDaysRemaining(d.dueDate) >= 0).length,
-    overdue:   items.filter((d: Deadline) => !d.completed && getDaysRemaining(d.dueDate) < 0).length,
-    completed: items.filter((d: Deadline) => d.completed).length,
-  };
-};
+export const selectDeadlineStats = createSelector(
+  [selectAllDeadlines],
+  (items) => calcStats(items)
+);
 
 export default deadlinesSlice.reducer;

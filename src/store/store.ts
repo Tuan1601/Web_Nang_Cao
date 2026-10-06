@@ -1,13 +1,19 @@
 import { configureStore, type ThunkAction, type Action } from '@reduxjs/toolkit';
 import deadlinesReducer from '@/features/deadlines/deadlinesSlice';
 import { localStorageMiddleware } from './localStorageMiddleware';
+import logger from 'redux-logger';
 
 export const store = configureStore({
   reducer: {
     deadlines: deadlinesReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(localStorageMiddleware),
+  middleware: (getDefaultMiddleware) => {
+    const middleware = getDefaultMiddleware().concat(localStorageMiddleware);
+    if (process.env.NODE_ENV !== 'production') {
+      return middleware.concat(logger);
+    }
+    return middleware;
+  },
 });
 
 export type AppStore    = typeof store;

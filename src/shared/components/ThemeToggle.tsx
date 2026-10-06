@@ -1,23 +1,32 @@
 'use client';
 
-import { useTheme } from 'next-themes';
+import React, { useEffect, useState } from 'react';
+import { useTheme, type Theme } from '@/shared/context/ThemeContext';
 import { Sun, Moon, Monitor } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   if (!mounted) return <div className="h-9" />;
 
-  const options = [
+  const options: { value: Theme; Icon: typeof Sun; label: string }[] = [
     { value: 'light',  Icon: Sun,     label: 'Sáng' },
     { value: 'system', Icon: Monitor, label: 'Hệ thống' },
     { value: 'dark',   Icon: Moon,    label: 'Tối' },
-  ] as const;
+  ];
 
   return (
-    <div className="flex items-center gap-1 p-1 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)' }}>
+    <div
+      className="flex items-center gap-1 p-1 rounded-xl"
+      style={{ background: 'rgba(255,255,255,0.06)' }}
+      role="group"
+      aria-label="Chuyển đổi giao diện sáng tối"
+    >
       {options.map(({ value, Icon, label }) => {
         const active = theme === value;
         return (
