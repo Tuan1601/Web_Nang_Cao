@@ -1,0 +1,110 @@
+[
+  {
+    "id": "1",
+    "title": "Bài tập lớn — Giao diện trang chủ",
+    "subjectSlug": "lap-trinh-web",
+    "description": "Hoàn thiện giao diện trang chủ responsive bằng Next.js và Tailwind CSS. Nộp source code và link deploy trên hệ thống lớp.",
+    "dueDate": "2026-11-02T23:59:00+07:00",
+    "type": "Bài tập lớn",
+    "createdAt": "2026-10-10T09:00:00+07:00"
+  },
+  {
+    "id": "2",
+    "title": "Thực hành — React hooks",
+    "subjectSlug": "lap-trinh-web",
+    "description": "Thực hành useState, useEffect và custom hooks qua ứng dụng quản lý công việc nhỏ.",
+    "dueDate": "2026-11-05T23:59:00+07:00",
+    "type": "Thực hành",
+    "createdAt": "2026-10-12T09:00:00+07:00"
+  },
+  {
+    "id": "3",
+    "title": "Quiz chương 4 — API và SSR",
+    "subjectSlug": "lap-trinh-web",
+    "description": "Bài quiz trên LMS gồm 20 câu hỏi về REST API, Server Components và các chiến lược rendering.",
+    "dueDate": "2026-11-09T20:00:00+07:00",
+    "type": "Quiz",
+    "createdAt": "2026-10-14T09:00:00+07:00"
+  },
+  {
+    "id": "4",
+    "title": "Bài tập SQL — Truy vấn nâng cao",
+    "subjectSlug": "co-so-du-lieu",
+    "description": "Viết các truy vấn JOIN, GROUP BY và truy vấn con theo bộ dữ liệu bán hàng được cung cấp.",
+    "dueDate": "2026-11-03T23:59:00+07:00",
+    "type": "Bài tập",
+    "createdAt": "2026-10-11T09:00:00+07:00"
+  },
+  {
+    "id": "5",
+    "title": "Thiết kế ERD — Hệ thống thư viện",
+    "subjectSlug": "co-so-du-lieu",
+    "description": "Phân tích yêu cầu, xây dựng sơ đồ ERD và chuyển đổi sang mô hình quan hệ chuẩn hóa.",
+    "dueDate": "2026-11-12T23:59:00+07:00",
+    "type": "Đồ án",
+    "createdAt": "2026-10-13T09:00:00+07:00"
+  },
+  {
+    "id": "6",
+    "title": "Kiểm tra giữa kỳ",
+    "subjectSlug": "co-so-du-lieu",
+    "description": "Kiểm tra trực tiếp trên lớp, nội dung từ chương 1 đến chương 5.",
+    "dueDate": "2026-11-18T08:00:00+07:00",
+    "type": "Kiểm tra",
+    "createdAt": "2026-10-15T09:00:00+07:00"
+  },
+  {
+    "id": "7",
+    "title": "Báo cáo nhóm — Mô hình Agile",
+    "subjectSlug": "cong-nghe-phan-mem",
+    "description": "Trình bày một case study về áp dụng Scrum trong dự án thực tế. Thời lượng tối đa 12 phút.",
+    "dueDate": "2026-11-06T23:59:00+07:00",
+    "type": "Báo cáo",
+    "createdAt": "2026-10-12T09:00:00+07:00"
+  },
+  {
+    "id": "8",
+    "title": "Đặc tả yêu cầu phần mềm",
+    "subjectSlug": "cong-nghe-phan-mem",
+    "description": "Viết tài liệu SRS cho đề tài nhóm, bao gồm use case, yêu cầu chức năng và phi chức năng.",
+    "dueDate": "2026-11-14T23:59:00+07:00",
+    "type": "Bài tập lớn",
+    "createdAt": "2026-10-14T09:00:00+07:00"
+  },
+  {
+    "id": "9",
+    "title": "Review chéo — Sprint 1",
+    "subjectSlug": "cong-nghe-phan-mem",
+    "description": "Đánh giá sản phẩm của nhóm bạn theo rubric và gửi nhận xét mang tính xây dựng.",
+    "dueDate": "2026-11-20T23:59:00+07:00",
+    "type": "Đánh giá",
+    "createdAt": "2026-10-16T09:00:00+07:00"
+  },
+  {
+    "id": "10",
+    "title": "Lab — Mã hóa đối xứng",
+    "subjectSlug": "an-toan-thong-tin",
+    "description": "Cài đặt và so sánh AES-CBC với AES-GCM; viết báo cáo ngắn về tính toàn vẹn dữ liệu.",
+    "dueDate": "2026-11-04T23:59:00+07:00",
+    "type": "Lab",
+    "createdAt": "2026-10-11T09:00:00+07:00"
+  },
+  {
+    "id": "11",
+    "title": "Bài tập — Phân tích lỗ hổng",
+    "subjectSlug": "an-toan-thong-tin",
+    "description": "Phân tích một lỗ hổng bảo mật đã công bố và trình bày khuyến nghị giảm thiểu rủi ro.",
+    "dueDate": "2026-11-16T23:59:00+07:00",
+    "type": "Bài tập",
+    "createdAt": "2026-10-15T09:00:00+07:00"
+  },
+  {
+    "id": "12",
+    "title": "Thi cuối kỳ — Đề cương ôn tập",
+    "subjectSlug": "an-toan-thong-tin",
+    "description": "Hoàn thành đề cương ôn tập và câu hỏi tự luận trên LMS trước khi thi cuối kỳ.",
+    "dueDate": "2026-11-25T23:59:00+07:00",
+    "type": "Ôn tập",
+    "createdAt": "2026-10-18T09:00:00+07:00"
+  }
+]
